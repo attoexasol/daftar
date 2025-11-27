@@ -49,7 +49,6 @@ class SignupScreen extends GetView<SignupController> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _buildHeader(),
                         const SizedBox(height: 40),
                         _buildSignupCard(context, isRTL),
                         const SizedBox(height: 24),
@@ -126,26 +125,6 @@ class SignupScreen extends GetView<SignupController> {
     );
   }
 
-  /// Header with Logo and App Name
-  Widget _buildHeader() {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 40,
-          backgroundImage: AssetImage("assets/icons/daftar_logo.png"),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          'app_name'.tr,
-          style: const TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-          ),
-        ),
-      ],
-    );
-  }
 
   /// Main Signup Card
   Widget _buildSignupCard(BuildContext context, bool isRTL) {
@@ -218,20 +197,8 @@ class SignupScreen extends GetView<SignupController> {
               _buildErrorMessage(),
               const SizedBox(height: 10),
 
-              // Full Name Field
-              _buildFullNameField(context, isRTL),
-              const SizedBox(height: 20),
-
               // Email Field
               _buildEmailField(context, isRTL),
-              const SizedBox(height: 20),
-
-              // Phone Field (Optional)
-              _buildPhoneField(context, isRTL),
-              const SizedBox(height: 20),
-
-              // Organization Field (Optional)
-              _buildOrganizationField(context, isRTL),
               const SizedBox(height: 20),
 
               // Password Field
@@ -348,57 +315,11 @@ class SignupScreen extends GetView<SignupController> {
     });
   }
 
-  /// Full Name Field
-  Widget _buildFullNameField(BuildContext context, bool isRTL) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          isRTL ? 'الاسم الكامل' : 'Full Name',
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller.fullNameController,
-          keyboardType: TextInputType.name,
-          textInputAction: TextInputAction.next,
-          textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
-          validator: controller.validateFullName,
-          decoration: InputDecoration(
-            hintText: isRTL ? 'أدخل اسمك الكامل' : 'Enter your full name',
-            prefixIcon: const Icon(Icons.person_outline),
-            filled: true,
-            fillColor: AppColors.inputBackground,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.inputBorder),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.inputBorder),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.primary, width: 2),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.error),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   /// Email Field
   Widget _buildEmailField(BuildContext context, bool isRTL) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           'email'.tr,
@@ -442,118 +363,11 @@ class SignupScreen extends GetView<SignupController> {
     );
   }
 
-  /// Phone Field (Optional)
-  Widget _buildPhoneField(BuildContext context, bool isRTL) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              isRTL ? 'رقم الهاتف' : 'Phone Number',
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(width: 4),
-            Text(
-              isRTL ? '(اختياري)' : '(Optional)',
-              style: const TextStyle(
-                fontSize: 12,
-                color: AppColors.textSecondary,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller.phoneController,
-          keyboardType: TextInputType.phone,
-          textInputAction: TextInputAction.next,
-          textDirection: TextDirection.ltr,
-          decoration: InputDecoration(
-            hintText: isRTL ? '+971 50 123 4567' : '+971 50 123 4567',
-            prefixIcon: const Icon(Icons.phone_outlined),
-            filled: true,
-            fillColor: AppColors.inputBackground,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.inputBorder),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.inputBorder),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.primary, width: 2),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// Organization Field (Optional)
-  Widget _buildOrganizationField(BuildContext context, bool isRTL) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              isRTL ? 'اسم المنظمة' : 'Organization Name',
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(width: 4),
-            Text(
-              isRTL ? '(اختياري)' : '(Optional)',
-              style: const TextStyle(
-                fontSize: 12,
-                color: AppColors.textSecondary,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller.organizationController,
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.next,
-          textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
-          decoration: InputDecoration(
-            hintText: isRTL ? 'أدخل اسم منظمتك' : 'Enter your organization name',
-            prefixIcon: const Icon(Icons.business_outlined),
-            filled: true,
-            fillColor: AppColors.inputBackground,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.inputBorder),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.inputBorder),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.primary, width: 2),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   /// Password Field
   Widget _buildPasswordField(BuildContext context, bool isRTL) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           'password'.tr,
@@ -663,7 +477,7 @@ class SignupScreen extends GetView<SignupController> {
   /// Confirm Password Field
   Widget _buildConfirmPasswordField(BuildContext context, bool isRTL) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           isRTL ? 'تأكيد كلمة المرور' : 'Confirm Password',
@@ -845,7 +659,7 @@ class SignupScreen extends GetView<SignupController> {
         TextButton(
           onPressed: controller.navigateToLogin,
           child: Text(
-            isRTL ? 'تسجيل الدخول' : 'Login',
+            isRTL ? 'تسجيل الدخول' : 'Sign In',
             style: const TextStyle(
               color: AppColors.primary,
               fontSize: 14,

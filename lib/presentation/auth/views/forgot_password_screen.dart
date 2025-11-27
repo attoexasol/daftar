@@ -5,7 +5,7 @@ import '../../../app/theme/app_colors.dart';
 
 /// Forgot Password Screen
 /// Request password reset email implementation
-/// 
+///
 /// Design: 100% matches LoginScreen & SignupScreen
 /// - Same background gradient
 /// - Same card styling
@@ -48,7 +48,7 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
                   ),
                 ),
                 _buildLanguageSwitcher(isRTL),
-                _buildBackButton(isRTL),
+                //_buildBackButton(isRTL),
               ],
             ),
           ),
@@ -57,40 +57,40 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
     );
   }
 
-  /// Back Button (Top Left/Right)
-  Widget _buildBackButton(bool isRTL) {
-    return Positioned(
-      top: 16,
-      left: isRTL ? null : 16,
-      right: isRTL ? 16 : null,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => Get.back(),
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.9),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Icon(
-              isRTL ? Icons.arrow_forward : Icons.arrow_back,
-              size: 20,
-              color: AppColors.textPrimary,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // /// Back Button (Top Left/Right)
+  // Widget _buildBackButton(bool isRTL) {
+  //   return Positioned(
+  //     top: 16,
+  //     left: isRTL ? null : 16,
+  //     right: isRTL ? 16 : null,
+  //     child: Material(
+  //       color: Colors.transparent,
+  //       child: InkWell(
+  //         onTap: () => Get.back(),
+  //         borderRadius: BorderRadius.circular(12),
+  //         child: Container(
+  //           padding: const EdgeInsets.all(12),
+  //           decoration: BoxDecoration(
+  //             color: Colors.white.withOpacity(0.9),
+  //             borderRadius: BorderRadius.circular(12),
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: Colors.black.withOpacity(0.1),
+  //                 blurRadius: 10,
+  //                 offset: const Offset(0, 4),
+  //               ),
+  //             ],
+  //           ),
+  //           child: Icon(
+  //             isRTL ? Icons.arrow_forward : Icons.arrow_back,
+  //             size: 20,
+  //             color: AppColors.textPrimary,
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   /// Language Switcher Button (Top Right/Left)
   Widget _buildLanguageSwitcher(bool isRTL) {
@@ -153,25 +153,25 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
   }
 
   /// Header with Logo and App Name
-  Widget _buildHeader() {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 40,
-          backgroundImage: AssetImage("assets/icons/daftar_logo.png"),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          'app_name'.tr,
-          style: const TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildHeader() {
+  //   return Column(
+  //     children: [
+  //       CircleAvatar(
+  //         radius: 40,
+  //         backgroundImage: AssetImage("assets/icons/daftar_logo.png"),
+  //       ),
+  //       const SizedBox(height: 16),
+  //       Text(
+  //         'app_name'.tr,
+  //         style: const TextStyle(
+  //           fontSize: 32,
+  //           fontWeight: FontWeight.bold,
+  //           color: AppColors.textPrimary,
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   /// Main Forgot Password Card
   Widget _buildForgotPasswordCard(BuildContext context, bool isRTL) {
@@ -196,23 +196,26 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // Icon
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.lock_reset,
-                  size: 48,
-                  color: AppColors.primary,
-                ),
-              ),
-              const SizedBox(height: 24),
+              // Container(
+              //   padding: const EdgeInsets.all(16),
+              //   decoration: BoxDecoration(
+              //     color: AppColors.primary.withOpacity(0.1),
+              //     shape: BoxShape.circle,
+              //   ),
+              //   child: const Icon(
+              //     Icons.lock_reset,
+              //     size: 48,
+              //     color: AppColors.primary,
+              //   ),
+              // ),
+              // const SizedBox(height: 24),
 
               // Title
+              _buildBackToLoginLink(isRTL),
+              const SizedBox(height: 24),
+
               Text(
-                isRTL ? 'نسيت كلمة المرور؟' : 'Forgot Password?',
+                isRTL ? 'إعادة تعيين كلمة المرور' : 'Reset Your Password',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 24,
@@ -225,8 +228,8 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
               // Description
               Text(
                 isRTL
-                    ? 'لا تقلق! أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور.'
-                    : 'No worries! Enter your email and we\'ll send you a password reset link.',
+                    ? 'أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.'
+                    : 'Enter your email and we\'ll send you a link to reset your password.',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 14,
@@ -251,7 +254,6 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
               const SizedBox(height: 24),
 
               // Back to Login Link
-              _buildBackToLoginLink(isRTL),
             ],
           ),
         ),
@@ -349,7 +351,7 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
   /// Email Field
   Widget _buildEmailField(BuildContext context, bool isRTL) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           'email'.tr,
@@ -403,11 +405,11 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
       () => ElevatedButton(
         onPressed: controller.isLoading.value ? null : controller.requestReset,
         style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 18),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          backgroundColor: AppColors.primary,
+          backgroundColor: Color(0xff1E293B),
           foregroundColor: Colors.white,
           disabledBackgroundColor: Colors.grey.shade300,
         ),
@@ -423,10 +425,10 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.send, size: 20),
-                  const SizedBox(width: 8),
+                  // const Icon(Icons.send, size: 20),
+                  // const SizedBox(width: 8),
                   Text(
-                    isRTL ? 'إرسال رابط إعادة التعيين' : 'Send Reset Link',
+                    isRTL ? 'إرسال رابط إعادة التعيين' : 'Send reset link',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -441,7 +443,7 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
   /// Back to Login Link
   Widget _buildBackToLoginLink(bool isRTL) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         const Icon(
           Icons.arrow_back,
@@ -451,9 +453,9 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
         TextButton(
           onPressed: controller.navigateToLogin,
           child: Text(
-            isRTL ? 'العودة إلى تسجيل الدخول' : 'Back to Login',
+            isRTL ? 'العودة إلى تسجيل الدخول' : 'Back to Sign In',
             style: const TextStyle(
-              color: AppColors.primary,
+              color: AppColors.gray500,
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
