@@ -89,6 +89,7 @@ class AppDrawer extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+
                   ),
                 ),
                 SizedBox(height: 4),
@@ -179,12 +180,12 @@ class AppDrawer extends StatelessWidget {
       final bool isActive = controller.selectedIndex.value == index;
 
       final Color bgColor =
-          isActive ? const Color(0xffe9f1ff) : Colors.transparent;
+          isActive ? const Color(0xff2A6AED) : Colors.transparent;
 
       final Color iconColor =
-          isActive ? const Color(0xff407BFF) : Colors.black87;
+          isActive ? const Color(0xffFAFAFA) : Colors.black87;
       final Color textColor =
-          isActive ? const Color(0xff407BFF) : Colors.black87;
+          isActive ? const Color(0xffFAFAFA) : Colors.black87;
 
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),

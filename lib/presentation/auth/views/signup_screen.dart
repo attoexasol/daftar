@@ -148,6 +148,8 @@ class SignupScreen extends GetView<SignupController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              _buildBackToLoginLink(isRTL),
+              const SizedBox(height: 24,),
               Text(
                 isRTL ? 'إنشاء حساب جديد' : 'Create New Account',
                 textAlign: TextAlign.center,
@@ -337,7 +339,7 @@ class SignupScreen extends GetView<SignupController> {
           textDirection: TextDirection.ltr,
           validator: controller.validateEmail,
           decoration: InputDecoration(
-            hintText: 'email_hint'.tr,
+            hintText: 'you@example.com'.tr,
             prefixIcon: const Icon(Icons.email_outlined),
             filled: true,
             fillColor: AppColors.inputBackground,
@@ -387,7 +389,7 @@ class SignupScreen extends GetView<SignupController> {
             validator: controller.validatePassword,
             onChanged: (_) => controller.updatePasswordStrength(),
             decoration: InputDecoration(
-              hintText: 'password_hint'.tr,
+              hintText: 'Min. 8 characters'.tr,
               prefixIcon: const Icon(Icons.lock_outline),
               suffixIcon: IconButton(
                 icon: Icon(
@@ -502,7 +504,7 @@ class SignupScreen extends GetView<SignupController> {
               }
             },
             decoration: InputDecoration(
-              hintText: isRTL ? 'أعد إدخال كلمة المرور' : 'Re-enter your password',
+              hintText: isRTL ? 'أعد إدخال كلمة المرور' : 'Re-enter password',
               prefixIcon: const Icon(Icons.lock_outline),
               suffixIcon: IconButton(
                 icon: Icon(
@@ -662,6 +664,30 @@ class SignupScreen extends GetView<SignupController> {
             isRTL ? 'تسجيل الدخول' : 'Sign In',
             style: const TextStyle(
               color: AppColors.primary,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+    Widget _buildBackToLoginLink(bool isRTL) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        const Icon(
+          Icons.arrow_back,
+          size: 16,
+          color: AppColors.textSecondary,
+        ),
+        TextButton(
+          onPressed: controller.navigateToLogin,
+          child: Text(
+            isRTL ? 'العودة إلى تسجيل الدخول' : 'Back to Sign In',
+            style: const TextStyle(
+              color: AppColors.gray500,
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),

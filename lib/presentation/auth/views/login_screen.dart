@@ -303,7 +303,7 @@ class LoginScreen extends GetView<LoginController> {
               FocusScope.of(ctx).nextFocus();
             },
             decoration: InputDecoration(
-              hintText: 'email_hint'.tr,
+              hintText: 'you@example.com'.tr,
               prefixIcon: const Icon(Icons.email_outlined),
               filled: true,
               fillColor: AppColors.inputBackground,
@@ -343,7 +343,7 @@ class LoginScreen extends GetView<LoginController> {
               },
               decoration: InputDecoration(
                 hintText: 'password_hint'.tr,
-                prefixIcon: const Icon(Icons.lock_outline),
+                prefixIcon: const Icon(Icons.lock_outline_rounded),
                 suffixIcon: IconButton(
                   icon: Icon(
                     controller.isPasswordVisible.value
@@ -420,9 +420,9 @@ class LoginScreen extends GetView<LoginController> {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.login, size: 20),
+                  //const Icon(Icons.login, size: 20),
                   const SizedBox(width: 8),
-                  Text('login'.tr),
+                  Text('login'.tr,style: TextStyle(fontWeight: FontWeight.bold),),
                 ],
               ),
       ),

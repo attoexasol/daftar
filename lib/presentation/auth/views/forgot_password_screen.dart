@@ -152,27 +152,6 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
     );
   }
 
-  /// Header with Logo and App Name
-  // Widget _buildHeader() {
-  //   return Column(
-  //     children: [
-  //       CircleAvatar(
-  //         radius: 40,
-  //         backgroundImage: AssetImage("assets/icons/daftar_logo.png"),
-  //       ),
-  //       const SizedBox(height: 16),
-  //       Text(
-  //         'app_name'.tr,
-  //         style: const TextStyle(
-  //           fontSize: 32,
-  //           fontWeight: FontWeight.bold,
-  //           color: AppColors.textPrimary,
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
   /// Main Forgot Password Card
   Widget _buildForgotPasswordCard(BuildContext context, bool isRTL) {
     return Container(
@@ -233,6 +212,7 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 14,
+                  fontWeight: FontWeight.bold,
                   color: AppColors.textSecondary,
                 ),
               ),
@@ -373,7 +353,8 @@ class ForgotPasswordScreen extends GetView<ForgotPasswordController> {
             controller.requestReset();
           },
           decoration: InputDecoration(
-            hintText: 'email_hint'.tr,
+            hintText: 'you@example.com'.tr,
+            hintStyle: TextStyle(color: Colors.grey),
             prefixIcon: const Icon(Icons.email_outlined),
             filled: true,
             fillColor: AppColors.inputBackground,
