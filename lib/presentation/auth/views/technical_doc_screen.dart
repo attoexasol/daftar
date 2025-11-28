@@ -261,7 +261,7 @@ class _TechnicalDocScreenState extends State<TechnicalDocScreen> {
           borderRadius: BorderRadius.circular(12),
         ),
       ).copyWith(
-        backgroundColor: MaterialStateProperty.all(Colors.transparent),
+        backgroundColor: WidgetStateProperty.all(Colors.transparent),
       ),
     ).decorated(
       gradient: const LinearGradient(

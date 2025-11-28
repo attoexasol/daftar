@@ -1,4 +1,5 @@
 import 'package:daftar/presentation/auth/controllers/dashboard_controller.dart';
+import 'package:daftar/presentation/auth/controllers/drawer_controller.dart';
 import 'package:get/get.dart';
 
 /// Dashboard Binding
@@ -9,5 +10,8 @@ class DashboardBinding extends Bindings {
     Get.lazyPut<DashboardController>(
       () => DashboardController(),
     );
+
+    Get.lazyPut(() => DrawerMenuController());
+
   }
 }

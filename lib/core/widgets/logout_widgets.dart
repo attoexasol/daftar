@@ -28,7 +28,7 @@ class LogoutButton extends StatelessWidget {
   final double? width;
 
   const LogoutButton({
-    Key? key,
+    super.key,
     this.showIcon = true,
     this.customText,
     this.onLogoutComplete,
@@ -36,7 +36,7 @@ class LogoutButton extends StatelessWidget {
     this.textColor,
     this.padding,
     this.width,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -105,12 +105,12 @@ class LogoutIconButton extends StatelessWidget {
   final VoidCallback? onLogoutComplete;
 
   const LogoutIconButton({
-    Key? key,
+    super.key,
     this.iconColor,
     this.iconSize,
     this.tooltip,
     this.onLogoutComplete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -152,11 +152,11 @@ class LogoutMenuItem extends StatelessWidget {
   final EdgeInsets? padding;
 
   const LogoutMenuItem({
-    Key? key,
+    super.key,
     this.showDividerAbove = true,
     this.onLogoutComplete,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -224,9 +224,9 @@ class LogoutAppBarAction extends StatelessWidget {
   final VoidCallback? onLogoutComplete;
 
   const LogoutAppBarAction({
-    Key? key,
+    super.key,
     this.onLogoutComplete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -248,11 +248,11 @@ class LogoutFloatingButton extends StatelessWidget {
   final Color? backgroundColor;
 
   const LogoutFloatingButton({
-    Key? key,
+    super.key,
     this.onLogoutComplete,
     this.label,
     this.backgroundColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -296,9 +296,9 @@ class LogoutListTile extends StatelessWidget {
   final VoidCallback? onLogoutComplete;
 
   const LogoutListTile({
-    Key? key,
+    super.key,
     this.onLogoutComplete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -374,9 +374,9 @@ class LogoutDangerZone extends StatelessWidget {
   final VoidCallback? onLogoutComplete;
 
   const LogoutDangerZone({
-    Key? key,
+    super.key,
     this.onLogoutComplete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

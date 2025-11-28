@@ -27,7 +27,7 @@ class DashboardScreen extends GetView<DashboardController> {
           ),
         ],
       ),
-      drawer: const AppDrawer(),
+      drawer:  AppDrawer(),
       backgroundColor: const Color(0xFFF9FAFB),
       body: Obx(() {
         if (controller.isLoading.value) {

@@ -478,8 +478,9 @@ class Base44Service {
         "full_name": fullName,
       };
 
-      if (organizationName != null)
+      if (organizationName != null) {
         body["organization_name"] = organizationName;
+      }
       if (phone != null) body["phone"] = phone;
 
       final res = await http

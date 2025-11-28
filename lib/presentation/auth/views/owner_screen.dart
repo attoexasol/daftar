@@ -757,7 +757,7 @@ class _OwnerScreenState extends State<OwnerScreen> {
               ],
             ),
           );
-        }).toList(),
+        }),
       ],
     );
   }
@@ -930,7 +930,7 @@ class _OwnerScreenState extends State<OwnerScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
-              color: const Color(0xFFDCEFF),
+              color: const Color(0x0ffdceff),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
@@ -974,7 +974,7 @@ class _OwnerScreenState extends State<OwnerScreen> {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

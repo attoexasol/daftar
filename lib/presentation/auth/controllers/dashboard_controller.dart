@@ -366,8 +366,8 @@ class DashboardController extends GetxController {
             ),
             ElevatedButton(
               onPressed: () => Get.back(result: true),
-              child: Text("logout".tr),
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: Text("logout".tr),
             ),
           ],
         ),

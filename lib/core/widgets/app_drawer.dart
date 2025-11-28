@@ -1,39 +1,28 @@
 import 'package:daftar/app/routes/app_routes.dart';
 import 'package:daftar/core/widgets/logout_widgets.dart';
+import 'package:daftar/presentation/auth/controllers/drawer_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
-class AppDrawer extends StatefulWidget {
-  const AppDrawer({super.key});
+class AppDrawer extends StatelessWidget {
+  AppDrawer({super.key});
 
-  @override
-  State<AppDrawer> createState() => _AppDrawerState();
-}
+  final DrawerMenuController controller = Get.find<DrawerMenuController>();
 
-class _AppDrawerState extends State<AppDrawer> {
-  int _selectedIndex = 0; // 0 = Technical Doc, 1 = Subscription, etc.
-
-  void _onMenuTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
+  void _onMenuTap(int index, BuildContext context) {
+    controller.selectedIndex.value = index;
     Navigator.pop(context);
 
     switch (index) {
       case 0:
         Get.toNamed(AppRoutes.technicalDoc);
         break;
-
       case 1:
         Get.toNamed(AppRoutes.subscription);
         break;
-
       case 2:
         Get.toNamed(AppRoutes.owner);
         break;
-
       case 3:
         Get.toNamed(AppRoutes.dashboard);
         break;
@@ -43,11 +32,10 @@ class _AppDrawerState extends State<AppDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      width: 300, // match screenshot
+      width: 300,
       backgroundColor: Colors.white,
       child: Column(
         children: [
-          // TOP: scrollable area (header + menu)
           Expanded(
             child: SingleChildScrollView(
               padding: EdgeInsets.zero,
@@ -61,10 +49,7 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
             ),
           ),
-
           const Divider(height: 5),
-
-          // BOTTOM: fixed language + user + footer
           _buildLanguageSelector(),
           const SizedBox(height: 20),
           _buildUserSection(context),
@@ -190,63 +175,65 @@ class _AppDrawerState extends State<AppDrawer> {
     Color? badgeTextColor,
     bool multiLineBadge = false,
   }) {
-    final bool isActive = _selectedIndex == index;
+    return Obx(() {
+      final bool isActive = controller.selectedIndex.value == index;
 
-    final Color bgColor = isActive
-        ? const Color(0xffe9f1ff) // light blue highlight
-        : Colors.transparent;
+      final Color bgColor =
+          isActive ? const Color(0xffe9f1ff) : Colors.transparent;
 
-    final Color iconColor = isActive ? const Color(0xff407BFF) : Colors.black87;
-    final Color textColor = isActive ? const Color(0xff407BFF) : Colors.black87;
+      final Color iconColor =
+          isActive ? const Color(0xff407BFF) : Colors.black87;
+      final Color textColor =
+          isActive ? const Color(0xff407BFF) : Colors.black87;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () => _onMenuTap(index),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeInOut,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: bgColor,
-          ),
-          child: Row(
-            children: [
-              Icon(icon, color: iconColor, size: 22),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  title,
-                  style: TextStyle(fontSize: 15, color: textColor),
-                ),
-              ),
-              if (badge != null)
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: multiLineBadge ? 8 : 10,
-                    vertical: multiLineBadge ? 6 : 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: badgeColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => _onMenuTap(index, Get.context!),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: bgColor,
+            ),
+            child: Row(
+              children: [
+                Icon(icon, color: iconColor, size: 22),
+                const SizedBox(width: 12),
+                Expanded(
                   child: Text(
-                    badge,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: badgeTextColor,
-                      height: multiLineBadge ? 1.1 : 1.2,
+                    title,
+                    style: TextStyle(fontSize: 15, color: textColor),
+                  ),
+                ),
+                if (badge != null)
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: multiLineBadge ? 8 : 10,
+                      vertical: multiLineBadge ? 6 : 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: badgeColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      badge,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: badgeTextColor,
+                        height: multiLineBadge ? 1.1 : 1.2,
+                      ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   // ------------------------------------------------------
