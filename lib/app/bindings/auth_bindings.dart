@@ -11,13 +11,13 @@ import '../../core/services/base44_service.dart';
 class AuthBinding extends Bindings {
   @override
   void dependencies() {
-    // Register Base44 Service
+    // Base44 API service
     Get.lazyPut<Base44Service>(
       () => Base44Service(),
       fenix: true,
     );
 
-    // Register Auth Repository
+    // Auth repository
     Get.lazyPut<AuthRepository>(
       () => AuthRepository(
         base44Service: Get.find<Base44Service>(),
@@ -25,17 +25,26 @@ class AuthBinding extends Bindings {
       fenix: true,
     );
 
-    // Register Login Controller
+    // Controllers
     Get.lazyPut<LoginController>(
       () => LoginController(
         authRepository: Get.find<AuthRepository>(),
       ),
+      fenix: true,
     );
 
-    Get.lazyPut<SignupController>(() => SignupController());
+    Get.lazyPut<SignupController>(
+      () => SignupController(
+        authRepository: Get.find<AuthRepository>(),
+      ),
+      fenix: true,
+    );
 
-    Get.lazyPut<LoginController>(() => LoginController());
-    Get.lazyPut<SignupController>(() => SignupController());
-    Get.lazyPut<ForgotPasswordController>(() => ForgotPasswordController());
+    Get.lazyPut<ForgotPasswordController>(
+      () => ForgotPasswordController(
+        authRepository: Get.find<AuthRepository>(),
+      ),
+      fenix: true,
+    );
   }
 }

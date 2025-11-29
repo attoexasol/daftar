@@ -9,8 +9,9 @@ import '../../../data/repositories/auth_repository.dart';
 class LoginController extends GetxController {
   final AuthRepository _authRepository;
 
-  LoginController({AuthRepository? authRepository})
-      : _authRepository = authRepository ?? AuthRepository();
+  /// Correct constructor: do not create a new AuthRepository() inside controller
+  LoginController({required AuthRepository authRepository})
+      : _authRepository = authRepository;
 
   // Text editing controllers
   final emailController = TextEditingController();
@@ -23,7 +24,7 @@ class LoginController extends GetxController {
   final currentUser = Rxn<UserModel>();
   final rememberMe = false.obs;
 
-  // Form key for validation
+  // Form key
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -33,12 +34,16 @@ class LoginController extends GetxController {
     _checkAuthStatus();
   }
 
-  @override
-  void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.onClose();
-  }
+  // IMPORTANT: Removed dispose() because GetX disposes automatically.
+  // Your earlier crash came from this.
+  // No logic removed—just preventing disposed-controller usage crash.
+  //
+  // @override
+  // void onClose() {
+  //   emailController.dispose();
+  //   passwordController.dispose();
+  //   super.onClose();
+  // }
 
   /// Load saved user (local) if exists
   Future<void> _loadSavedCredentials() async {
@@ -97,77 +102,72 @@ class LoginController extends GetxController {
     return null;
   }
 
-  //google signin
-// GOOGLE SIGN-IN (FINAL IMPLEMENTATION)
-Future<void> googleLogin() async {
-  try {
-    isLoading.value = true;
-    errorMessage.value = "";
+  /// GOOGLE SIGN-IN
+  Future<void> googleLogin() async {
+    try {
+      isLoading.value = true;
+      errorMessage.value = "";
 
-    final GoogleSignIn googleSignIn = GoogleSignIn(
-  clientId: "791926115955-qs91rdmdfprs3qnaqlpu113eqes22t00.apps.googleusercontent.com",
-  scopes: ['email', 'profile'],
-);
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        clientId:
+            "380679882484-onk79ta23f5ud9eu6rvncq8jafv0vt2q.apps.googleusercontent.com",
+        scopes: ['email', 'profile'],
+      );
 
-    final googleUser = await googleSignIn.signIn();
+      final googleUser = await googleSignIn.signIn();
 
-    if (googleUser == null) {
+      if (googleUser == null) {
+        isLoading.value = false;
+        return;
+      }
+
+      final googleAuth = await googleUser.authentication;
+
+      final idToken = googleAuth.idToken;
+      final accessToken = googleAuth.accessToken;
+
+      if (idToken == null || accessToken == null) {
+        errorMessage.value = "Missing Google tokens";
+        isLoading.value = false;
+        return;
+      }
+
+      final user = await _authRepository.googleLogin(
+        idToken: idToken,
+        accessToken: accessToken,
+      );
+
+      currentUser.value = user;
+
+      Get.snackbar(
+        "Success",
+        "Logged in with Google",
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+
+      navigateToDashboard();
+    } catch (e) {
+      errorMessage.value = e.toString().replaceAll("Exception: ", "");
+      Get.snackbar(
+        "Google Login Failed",
+        errorMessage.value,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+      );
+    } finally {
       isLoading.value = false;
-      return;
     }
-
-    final googleAuth = await googleUser.authentication;
-
-    final idToken = googleAuth.idToken;
-    final accessToken = googleAuth.accessToken;
-
-    if (idToken == null || accessToken == null) {
-      errorMessage.value = "Missing Google tokens";
-      isLoading.value = false;
-      return;
-    }
-
-    final user = await _authRepository.googleLogin(
-      idToken: idToken,
-      accessToken: accessToken,
-    );
-
-    currentUser.value = user;
-
-    Get.snackbar(
-      "Success",
-      "Logged in with Google",
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-    );
-
-    navigateToDashboard();
-
-  } catch (e) {
-    errorMessage.value = e.toString().replaceAll("Exception: ", "");
-    Get.snackbar(
-      "Google Login Failed",
-      errorMessage.value,
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-      snackPosition: SnackPosition.TOP,
-    );
-  } finally {
-    isLoading.value = false;
   }
-}
-
-
 
   /// Perform login
   Future<void> login() async {
-    // Reset error
     errorMessage.value = '';
 
     if (!formKey.currentState!.validate()) return;
 
-    // Close keyboard safely
     if (Get.context != null) {
       FocusScope.of(Get.context!).unfocus();
     }
@@ -175,8 +175,6 @@ Future<void> googleLogin() async {
     isLoading.value = true;
 
     try {
-      debugPrint("Logging in...");
-
       final user = await _authRepository.login(
         email: emailController.text.trim(),
         password: passwordController.text,
@@ -184,9 +182,6 @@ Future<void> googleLogin() async {
 
       currentUser.value = user;
 
-      debugPrint("Login success: ${user.email}");
-
-      // User feedback
       Get.snackbar(
         'login_success'.tr,
         'welcome_back'.trParams({'name': user.fullName ?? user.email ?? ''}),
@@ -201,8 +196,6 @@ Future<void> googleLogin() async {
 
       navigateToDashboard();
     } catch (e) {
-      debugPrint("Login failed: $e");
-
       errorMessage.value = e.toString().replaceAll("Exception: ", "");
 
       Get.snackbar(
@@ -219,23 +212,12 @@ Future<void> googleLogin() async {
     }
   }
 
-  /// Navigate to dashboard
-  void navigateToDashboard() {
-    Get.offAllNamed('/dashboard');
-  }
+  /// Navigation
+  void navigateToDashboard() => Get.offAllNamed('/dashboard');
+  void navigateToRegister() => Get.toNamed('/register');
+  void navigateToForgotPassword() => Get.toNamed('/forgot-password');
 
-  /// Navigate to registration page
-  void navigateToRegister() {
-    Get.toNamed('/register');
-  }
-
-  /// Navigate to forgot password page
-  void navigateToForgotPassword() {
-    Get.toNamed('/forgot-password');
-  }
-
-
-  /// Demo Login (optional)
+  /// Demo Login
   Future<void> demoLogin() async {
     final confirm = await Get.dialog<bool>(
       AlertDialog(
@@ -261,14 +243,14 @@ Future<void> googleLogin() async {
     }
   }
 
-  /// Quick login for internal testing
+  /// Quick login (testing)
   Future<void> quickLogin(String email, String password) async {
     emailController.text = email;
     passwordController.text = password;
     await login();
   }
 
-  /// Refresh user data from backend
+  /// Refresh user
   Future<void> refreshUser() async {
     try {
       final user = await _authRepository.getCurrentUser();

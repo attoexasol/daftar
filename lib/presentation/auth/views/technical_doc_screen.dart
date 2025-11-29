@@ -1,4 +1,3 @@
-import 'package:daftar/app/theme/app_colors.dart';
 import 'package:daftar/core/services/language_service.dart';
 import 'package:daftar/core/widgets/app_drawer.dart';
 import 'package:daftar/core/widgets/primary_app_bar.dart';

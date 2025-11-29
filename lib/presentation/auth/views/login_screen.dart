@@ -244,7 +244,15 @@ class LoginScreen extends GetView<LoginController> {
 
   Widget _buildErrorMessage() {
     return Obx(() {
-      if (controller.errorMessage.value.isEmpty) {
+      String msg = controller.errorMessage.value.trim();
+
+      // hide when empty
+      if (msg.isEmpty) {
+        return const SizedBox.shrink();
+      }
+
+      // 🔥 hide only popup_closed type messages
+      if (msg.toLowerCase().contains("popup_closed")) {
         return const SizedBox.shrink();
       }
 
@@ -422,7 +430,10 @@ class LoginScreen extends GetView<LoginController> {
                 children: [
                   //const Icon(Icons.login, size: 20),
                   const SizedBox(width: 8),
-                  Text('login'.tr,style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text(
+                    'login'.tr,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
       ),
@@ -449,7 +460,6 @@ class LoginScreen extends GetView<LoginController> {
       ],
     );
   }
-
 
   Widget _buildFeatureChip(String label, IconData icon) {
     return Container(
