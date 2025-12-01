@@ -958,7 +958,7 @@ class DashboardScreen extends GetView<DashboardController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
+            // Header - Matching React CardHeader
             Container(
               padding: const EdgeInsets.all(20),
               decoration: const BoxDecoration(
@@ -966,7 +966,7 @@ class DashboardScreen extends GetView<DashboardController> {
                   colors: [Color(0xFFF9FAFB), Colors.white],
                 ),
                 border: Border(
-                  bottom: BorderSide(color: AppColors.border, width: 1),
+                  bottom: BorderSide(color: Color(0xFFE5E7EB), width: 1),
                 ),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(12),
@@ -975,48 +975,62 @@ class DashboardScreen extends GetView<DashboardController> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.calendar_today,
-                      size: 20, color: AppColors.primary),
+                  const Icon(
+                    Icons.calendar_today,
+                    size: 20,
+                    color: Color(0xFF3B82F6), // text-blue-600
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     isRTL ? 'آخر المعاملات' : 'Latest Transactions',
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 20, // text-xl
                       fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+                      color: Color(0xFF111827), // text-gray-900
                     ),
                   ),
                 ],
               ),
             ),
 
-            // Transactions List or Empty State
+            // Transactions List - Matching React with divide-y
             if (transactions.isEmpty)
+              // Empty State - Matching React
               Padding(
-                padding: const EdgeInsets.all(32.0),
+                padding: const EdgeInsets.all(32.0), // p-8
                 child: Center(
                   child: Text(
                     isRTL ? 'لا توجد معاملات حالياً' : 'No transactions yet',
                     style: const TextStyle(
                       fontSize: 16,
-                      color: AppColors.textSecondary,
+                      color: Color(0xFF6B7280), // text-gray-500
                     ),
                   ),
                 ),
               )
             else
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: transactions.length,
-                separatorBuilder: (context, index) => Divider(
-                  height: 1,
-                  color: AppColors.gray200,
+              // Transaction Items with dividers
+              Column(
+                children: List.generate(
+                  transactions.length,
+                  (index) {
+                    final transaction = transactions[index];
+                    final isLast = index == transactions.length - 1;
+                    
+                    return Column(
+                      children: [
+                        _buildTransactionItem(transaction, isRTL),
+                        // Divider between items (divide-y in React)
+                        if (!isLast)
+                          const Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: Color(0xFFE5E7EB), // border color
+                          ),
+                      ],
+                    );
+                  },
                 ),
-                itemBuilder: (context, index) {
-                  final transaction = transactions[index];
-                  return _buildTransactionItem(transaction, isRTL);
-                },
               ),
           ],
         ),
@@ -1027,96 +1041,182 @@ class DashboardScreen extends GetView<DashboardController> {
   /// Transaction Item - EXACT match with React
   Widget _buildTransactionItem(TransactionModel transaction, bool isRTL) {
     final isIncome = transaction.isIncome;
-    final iconColor = isIncome ? AppColors.success : AppColors.error;
-    final amountColor = isIncome ? AppColors.successDark : AppColors.errorDark;
-    final bgColor =
-        isIncome ? const Color(0xFFD1FAE5) : const Color(0xFFFEE2E2);
+    
+    // Colors matching React exactly
+    final iconBgColor = isIncome 
+        ? const Color(0xFFD1FAE5)  // bg-green-100
+        : const Color(0xFFFEE2E2); // bg-red-100
+    
+    final iconColor = isIncome 
+        ? const Color(0xFF059669)  // text-green-600
+        : const Color(0xFFDC2626); // text-red-600
+    
+    final amountColor = isIncome 
+        ? const Color(0xFF059669)  // text-green-600
+        : const Color(0xFFDC2626); // text-red-600
+
+    // Category labels matching React
+    final categoryLabels = isRTL ? {
+      'sales': 'مبيعات',
+      'services': 'خدمات',
+      'other_income': 'دخل آخر',
+      'salaries': 'رواتب',
+      'rent': 'إيجار',
+      'utilities': 'مرافق',
+      'purchases': 'مشتريات',
+      'marketing': 'تسويق',
+      'transportation': 'مواصلات',
+      'maintenance': 'صيانة',
+      'taxes': 'ضرائب',
+      'other_expense': 'مصروف آخر',
+    } : {
+      'sales': 'Sales',
+      'services': 'Services',
+      'other_income': 'Other Income',
+      'salaries': 'Salaries',
+      'rent': 'Rent',
+      'utilities': 'Utilities',
+      'purchases': 'Purchases',
+      'marketing': 'Marketing',
+      'transportation': 'Transportation',
+      'maintenance': 'Maintenance',
+      'taxes': 'Taxes',
+      'other_expense': 'Other Expense',
+    };
+
+    // Payment method labels matching React
+    final paymentMethodLabels = isRTL ? {
+      'cash': 'نقداً',
+      'bank_transfer': 'تحويل بنكي',
+      'credit_card': 'بطاقة ائتمان',
+      'cheque': 'شيك',
+    } : {
+      'cash': 'Cash',
+      'bank_transfer': 'Bank Transfer',
+      'credit_card': 'Credit Card',
+      'cheque': 'Cheque',
+    };
 
     return InkWell(
       onTap: () {
         // Transaction tap action
       },
-      hoverColor: AppColors.gray50,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+      hoverColor: const Color(0xFFF9FAFB), // hover:bg-gray-50
+      child: Container(
+        padding: const EdgeInsets.all(16), // p-4
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Icon circle
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                isIncome ? Icons.arrow_downward : Icons.arrow_upward,
-                color: iconColor,
-                size: 20,
-              ),
-            ),
-
-            const SizedBox(width: 16),
-
-            // Transaction details
+            // Left side: Icon + Details
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  // Description
-                  Text(
-                    transaction.description ??
-                        (isIncome ? 'Income' : 'Expense'),
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+                  // Icon Circle - Matching React exactly (p-3 rounded-xl)
+                  Container(
+                    padding: const EdgeInsets.all(12), // p-3
+                    decoration: BoxDecoration(
+                      color: iconBgColor,
+                      borderRadius: BorderRadius.circular(12), // rounded-xl
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                    child: Icon(
+                      // React uses ArrowUpRight for income, ArrowDownRight for expense
+                      isIncome ? Icons.arrow_upward : Icons.arrow_downward,
+                      size: 20, // w-5 h-5
+                      color: iconColor,
+                    ),
                   ),
-                  const SizedBox(height: 4),
-                  // Date
-                  Text(
-                    _formatTransactionDate(transaction.date, isRTL),
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
+
+                  const SizedBox(width: 16), // gap-4
+
+                  // Transaction Details
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Category (Primary) - font-semibold text-gray-900
+                        Text(
+                          categoryLabels[transaction.category] ?? 
+                              transaction.category ?? 
+                              (isIncome ? 'Income' : 'Expense'),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600, // font-semibold
+                            color: Color(0xFF111827), // text-gray-900
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        
+                        const SizedBox(height: 4),
+                        
+                        // Description/Customer (Secondary) - text-sm text-gray-500
+                        Text(
+                          transaction.description ?? 
+                              transaction.customerSupplier ?? 
+                              '-',
+                          style: const TextStyle(
+                            fontSize: 14, // text-sm
+                            color: Color(0xFF6B7280), // text-gray-500
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        
+                        const SizedBox(height: 4),
+                        
+                        // Date - text-xs text-gray-400 mt-1
+                        Text(
+                          _formatTransactionDate(transaction.date, isRTL),
+                          style: const TextStyle(
+                            fontSize: 12, // text-xs
+                            color: Color(0xFF9CA3AF), // text-gray-400
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(width: 16),
-
-            // Amount and category
+            // Right side: Amount + Payment Method Badge
             Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end, // text-left in React (RTL context)
               children: [
-                // Amount with +/- prefix
+                // Amount - text-lg font-bold with color
                 Text(
                   '${isIncome ? '+' : '-'}${_formatCurrency(transaction.amount ?? 0, isRTL)}',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 18, // text-lg
                     fontWeight: FontWeight.bold,
                     color: amountColor,
                   ),
                 ),
-                const SizedBox(height: 4),
-                // Category badge
+                
+                const SizedBox(height: 4), // mt-1
+                
+                // Payment Method Badge - variant="outline" text-xs
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
-                    color: AppColors.gray100,
+                    color: Colors.transparent,
+                    border: Border.all(
+                      color: const Color(0xFFD1D5DB), // border-gray-300
+                      width: 1,
+                    ),
                     borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: AppColors.gray300),
                   ),
                   child: Text(
-                    transaction.getCategoryDisplay(locale: isRTL ? 'en' : 'ar'),
+                    paymentMethodLabels[transaction.paymentMethod] ?? 
+                        transaction.paymentMethod ?? 
+                        'N/A',
                     style: const TextStyle(
-                      fontSize: 11,
-                      color: AppColors.textSecondary,
+                      fontSize: 12, // text-xs
+                      color: Color(0xFF6B7280), // text-gray-600
                       fontWeight: FontWeight.w500,
                     ),
                   ),

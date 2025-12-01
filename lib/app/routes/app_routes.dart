@@ -1,10 +1,12 @@
 import 'package:daftar/app/bindings/splash_binding.dart';
+import 'package:daftar/app/bindings/transactions_binding.dart';
 import 'package:daftar/presentation/auth/views/forgot_password_screen.dart';
 import 'package:daftar/presentation/auth/views/owner_screen.dart';
 import 'package:daftar/presentation/auth/views/reset_password_screen.dart';
 import 'package:daftar/presentation/auth/views/signup_screen.dart';
 import 'package:daftar/presentation/auth/views/subscription_screen.dart';
 import 'package:daftar/presentation/auth/views/technical_doc_screen.dart';
+import 'package:daftar/presentation/auth/views/transactions_screen.dart';
 import 'package:get/get.dart';
 
 import '../../presentation/auth/views/login_screen.dart';
@@ -38,7 +40,6 @@ class AppRoutes {
   static const subscription = '/subscription';
   static const owner = '/owner';
   static const forgotPassword = '/forgot-password';
-
 
   // Routes list
   static final routes = [
@@ -92,26 +93,23 @@ class AppRoutes {
     ),
 
     // lib/app/routes/app_routes.dart
-GetPage(
-  name: '/forgot-password',
-  page: () => const ForgotPasswordScreen(),
-  binding: AuthBinding(),
-),
-GetPage(
-  name: '/reset-password',
-  page: () => const ResetPasswordScreen(),
-  binding: AuthBinding(),
-),
+    GetPage(
+      name: '/forgot-password',
+      page: () => const ForgotPasswordScreen(),
+      binding: AuthBinding(),
+    ),
+    GetPage(
+      name: '/reset-password',
+      page: () => const ResetPasswordScreen(),
+      binding: AuthBinding(),
+    ),
 
-    // Transactions Screen
-    // GetPage(
-    //   name: transactions,
-    //   page: () => const TransactionsScreen(),
-    //   binding: TransactionsBinding(),
-    //   transition: Transition.fadeIn,
-    //   middlewares: [AsyncAuthMiddleware()],
-    // ),
-
+    GetPage(
+      name: AppRoutes.transactions,
+      page: () => const TransactionsScreen(),
+      binding: TransactionsBinding(),
+      transition: Transition.fadeIn,
+    ),
     // Invoices Screen
     // GetPage(
     //   name: invoices,

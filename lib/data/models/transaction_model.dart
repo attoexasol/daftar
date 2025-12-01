@@ -286,6 +286,33 @@ class TransactionModel {
   }
 
   @override
+  /// Always show English description for dashboard
+String get descriptionEn {
+  // If API already sends English, use it directly
+  if (description != null && description!.contains(RegExp(r'[a-zA-Z]'))) {
+    return description!;
+  }
+
+  // Fallback mapping based on category
+  switch (category) {
+    case 'sales':
+      return 'Daily Sales';
+    case 'salaries':
+      return 'Salaries';
+    case 'purchases':
+      return 'Purchases';
+    case 'rent':
+      return 'Rent';
+    case 'utilities':
+      return 'Utilities';
+    case 'marketing':
+      return 'Marketing';
+    default:
+      return 'Transaction';
+  }
+}
+
+  @override
   String toString() {
     return 'TransactionModel(id: $id, type: $type, amount: $amount, date: $date, category: $category)';
   }
