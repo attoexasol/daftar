@@ -8,6 +8,7 @@ import '../../../data/models/transaction_model.dart';
 
 /// Transactions Screen
 /// 100% EXACT match with React Transactions.jsx implementation
+/// FIXED: All GetX/Obx errors resolved
 class TransactionsScreen extends GetView<TransactionsController> {
   const TransactionsScreen({super.key});
 
@@ -124,7 +125,10 @@ class TransactionsScreen extends GetView<TransactionsController> {
     return Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF3B82F6), Color(0xFF2563EB)], // blue-500 to blue-600
+          colors: [
+            Color(0xFF3B82F6),
+            Color(0xFF2563EB)
+          ], // blue-500 to blue-600
         ),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
@@ -164,10 +168,12 @@ class TransactionsScreen extends GetView<TransactionsController> {
   }
 
   /// Summary Cards - EXACT match with React (3 cards)
+  /// FIXED: Proper Obx usage with .value access
   Widget _buildSummaryCards(bool isRTL, double screenWidth) {
     final isDesktop = screenWidth > 768;
-    
+
     return Obx(() {
+      // FIXED: Access .value for each observable
       final totalIncome = controller.totalIncome.value;
       final totalExpense = controller.totalExpense.value;
       final netProfit = totalIncome - totalExpense;
@@ -175,7 +181,8 @@ class TransactionsScreen extends GetView<TransactionsController> {
       return isDesktop
           ? Row(
               children: [
-                Expanded(child: _buildSummaryCard(
+                Expanded(
+                    child: _buildSummaryCard(
                   title: isRTL ? 'إجمالي الإيرادات' : 'Total Income',
                   value: totalIncome,
                   icon: Icons.arrow_upward,
@@ -188,7 +195,8 @@ class TransactionsScreen extends GetView<TransactionsController> {
                   isRTL: isRTL,
                 )),
                 const SizedBox(width: 24),
-                Expanded(child: _buildSummaryCard(
+                Expanded(
+                    child: _buildSummaryCard(
                   title: isRTL ? 'إجمالي المصروفات' : 'Total Expenses',
                   value: totalExpense,
                   icon: Icons.arrow_downward,
@@ -201,17 +209,18 @@ class TransactionsScreen extends GetView<TransactionsController> {
                   isRTL: isRTL,
                 )),
                 const SizedBox(width: 24),
-                Expanded(child: _buildSummaryCard(
+                Expanded(
+                    child: _buildSummaryCard(
                   title: isRTL ? 'صافي الربح' : 'Net Profit',
                   value: netProfit,
                   icon: Icons.arrow_upward,
                   gradient: const LinearGradient(
                     colors: [Color(0xFFEFF6FF), Colors.white], // from-blue-50
                   ),
-                  valueColor: netProfit >= 0 
+                  valueColor: netProfit >= 0
                       ? const Color(0xFF2563EB) // text-blue-600
                       : const Color(0xFFEA580C), // text-orange-600
-                  iconBgColor: const Color(0x0ffdceff), // bg-blue-100
+                  iconBgColor: const Color(0xFFDBEAFE), // bg-blue-100
                   iconColor: const Color(0xFF2563EB), // text-blue-600
                   isRTL: isRTL,
                 )),
@@ -252,7 +261,7 @@ class TransactionsScreen extends GetView<TransactionsController> {
                   gradient: const LinearGradient(
                     colors: [Color(0xFFEFF6FF), Colors.white],
                   ),
-                  valueColor: netProfit >= 0 
+                  valueColor: netProfit >= 0
                       ? const Color(0xFF2563EB)
                       : const Color(0xFFEA580C),
                   iconBgColor: const Color(0xFFDBEAFE),
@@ -336,6 +345,7 @@ class TransactionsScreen extends GetView<TransactionsController> {
   }
 
   /// Filters Card - EXACT match with React
+  /// FIXED: Proper Obx usage
   Widget _buildFiltersCard(bool isRTL, double screenWidth) {
     final isDesktop = screenWidth > 768;
 
@@ -361,14 +371,14 @@ class TransactionsScreen extends GetView<TransactionsController> {
                     child: _buildSearchField(isRTL),
                   ),
                   const SizedBox(width: 16),
-                  
+
                   // Filter dropdown
                   SizedBox(
                     width: 200,
                     child: _buildFilterDropdown(isRTL),
                   ),
                   const SizedBox(width: 16),
-                  
+
                   // Export button
                   _buildExportButton(isRTL),
                 ],
@@ -391,7 +401,7 @@ class TransactionsScreen extends GetView<TransactionsController> {
   }
 
   Widget _buildSearchField(bool isRTL) {
-    return Obx(() => TextField(
+    return TextField(
       controller: controller.searchController,
       decoration: InputDecoration(
         hintText: isRTL ? 'البحث في المعاملات...' : 'Search transactions...',
@@ -411,46 +421,47 @@ class TransactionsScreen extends GetView<TransactionsController> {
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: AppColors.primary, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
       onChanged: (value) => controller.searchTerm.value = value,
-    ));
+    );
   }
 
   Widget _buildFilterDropdown(bool isRTL) {
     return Obx(() => Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFFE5E7EB)),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: controller.filterType.value,
-          isExpanded: true,
-          icon: const Icon(Icons.filter_list, size: 16),
-          items: [
-            DropdownMenuItem(
-              value: 'all',
-              child: Text(isRTL ? 'جميع المعاملات' : 'All Transactions'),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xFFE5E7EB)),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: controller.filterType.value,
+              isExpanded: true,
+              icon: const Icon(Icons.filter_list, size: 16),
+              items: [
+                DropdownMenuItem(
+                  value: 'all',
+                  child: Text(isRTL ? 'جميع المعاملات' : 'All Transactions'),
+                ),
+                DropdownMenuItem(
+                  value: 'income',
+                  child: Text(isRTL ? 'الإيرادات فقط' : 'Income Only'),
+                ),
+                DropdownMenuItem(
+                  value: 'expense',
+                  child: Text(isRTL ? 'المصروفات فقط' : 'Expenses Only'),
+                ),
+              ],
+              onChanged: (value) {
+                if (value != null) {
+                  controller.filterType.value = value;
+                }
+              },
             ),
-            DropdownMenuItem(
-              value: 'income',
-              child: Text(isRTL ? 'الإيرادات فقط' : 'Income Only'),
-            ),
-            DropdownMenuItem(
-              value: 'expense',
-              child: Text(isRTL ? 'المصروفات فقط' : 'Expenses Only'),
-            ),
-          ],
-          onChanged: (value) {
-            if (value != null) {
-              controller.filterType.value = value;
-            }
-          },
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 
   Widget _buildExportButton(bool isRTL) {
@@ -481,8 +492,10 @@ class TransactionsScreen extends GetView<TransactionsController> {
   }
 
   /// Transactions Table - EXACT match with React
+  /// FIXED: Proper Obx usage for filtered transactions
   Widget _buildTransactionsTable(bool isRTL) {
     return Obx(() {
+      // FIXED: Access filteredTransactions as a getter
       final transactions = controller.filteredTransactions;
 
       return Container(
@@ -549,9 +562,12 @@ class TransactionsScreen extends GetView<TransactionsController> {
                     DataColumn(label: Text(isRTL ? 'التاريخ' : 'Date')),
                     DataColumn(label: Text(isRTL ? 'النوع' : 'Type')),
                     DataColumn(label: Text(isRTL ? 'التصنيف' : 'Category')),
-                    DataColumn(label: Text(isRTL ? 'العميل/المورد' : 'Customer/Supplier')),
+                    DataColumn(
+                        label: Text(
+                            isRTL ? 'العميل/المورد' : 'Customer/Supplier')),
                     DataColumn(label: Text(isRTL ? 'المبلغ' : 'Amount')),
-                    DataColumn(label: Text(isRTL ? 'طريقة الدفع' : 'Payment Method')),
+                    DataColumn(
+                        label: Text(isRTL ? 'طريقة الدفع' : 'Payment Method')),
                     DataColumn(label: Text(isRTL ? 'الإجراءات' : 'Actions')),
                   ],
                   rows: transactions.map((transaction) {
@@ -559,18 +575,20 @@ class TransactionsScreen extends GetView<TransactionsController> {
                       cells: [
                         DataCell(Text(_formatDate(transaction.date, isRTL))),
                         DataCell(_buildTypeBadge(transaction.isIncome, isRTL)),
-                        DataCell(Text(_getCategoryLabel(transaction.category, isRTL))),
+                        DataCell(Text(
+                            _getCategoryLabel(transaction.category, isRTL))),
                         DataCell(Text(transaction.customerSupplier ?? '-')),
                         DataCell(Text(
                           '${transaction.isIncome ? '+' : '-'}${_formatCurrency(transaction.amount ?? 0, isRTL)}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: transaction.isIncome 
-                                ? const Color(0xFF059669) 
+                            color: transaction.isIncome
+                                ? const Color(0xFF059669)
                                 : const Color(0xFFDC2626),
                           ),
                         )),
-                        DataCell(Text(_getPaymentMethodLabel(transaction.paymentMethod, isRTL))),
+                        DataCell(Text(_getPaymentMethodLabel(
+                            transaction.paymentMethod, isRTL))),
                         DataCell(_buildActionButtons(transaction)),
                       ],
                     );
@@ -642,63 +660,77 @@ class TransactionsScreen extends GetView<TransactionsController> {
 
   String _formatDate(DateTime? date, bool isRTL) {
     if (date == null) return '';
-    
+
     if (isRTL) {
       final months = [
-        'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
-        'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+        'يناير',
+        'فبراير',
+        'مارس',
+        'أبريل',
+        'مايو',
+        'يونيو',
+        'يوليو',
+        'أغسطس',
+        'سبتمبر',
+        'أكتوبر',
+        'نوفمبر',
+        'ديسمبر'
       ];
       return '${date.day} ${months[date.month - 1]} ${date.year}';
     }
-    
+
     return DateFormat('d MMM yyyy').format(date);
   }
 
   String _getCategoryLabel(String? category, bool isRTL) {
-    final labels = isRTL ? {
-      'sales': 'مبيعات',
-      'services': 'خدمات',
-      'other_income': 'دخل آخر',
-      'salaries': 'رواتب',
-      'rent': 'إيجار',
-      'utilities': 'مرافق',
-      'purchases': 'مشتريات',
-      'marketing': 'تسويق',
-      'transportation': 'مواصلات',
-      'maintenance': 'صيانة',
-      'taxes': 'ضرائب',
-      'other_expense': 'مصروف آخر',
-    } : {
-      'sales': 'Sales',
-      'services': 'Services',
-      'other_income': 'Other Income',
-      'salaries': 'Salaries',
-      'rent': 'Rent',
-      'utilities': 'Utilities',
-      'purchases': 'Purchases',
-      'marketing': 'Marketing',
-      'transportation': 'Transportation',
-      'maintenance': 'Maintenance',
-      'taxes': 'Taxes',
-      'other_expense': 'Other Expense',
-    };
-    
+    final labels = isRTL
+        ? {
+            'sales': 'مبيعات',
+            'services': 'خدمات',
+            'other_income': 'دخل آخر',
+            'salaries': 'رواتب',
+            'rent': 'إيجار',
+            'utilities': 'مرافق',
+            'purchases': 'مشتريات',
+            'marketing': 'تسويق',
+            'transportation': 'مواصلات',
+            'maintenance': 'صيانة',
+            'taxes': 'ضرائب',
+            'other_expense': 'مصروف آخر',
+          }
+        : {
+            'sales': 'Sales',
+            'services': 'Services',
+            'other_income': 'Other Income',
+            'salaries': 'Salaries',
+            'rent': 'Rent',
+            'utilities': 'Utilities',
+            'purchases': 'Purchases',
+            'marketing': 'Marketing',
+            'transportation': 'Transportation',
+            'maintenance': 'Maintenance',
+            'taxes': 'Taxes',
+            'other_expense': 'Other Expense',
+          };
+
     return labels[category] ?? category ?? '';
   }
 
   String _getPaymentMethodLabel(String? method, bool isRTL) {
-    final labels = isRTL ? {
-      'cash': 'نقداً',
-      'bank_transfer': 'تحويل بنكي',
-      'credit_card': 'بطاقة ائتمان',
-      'cheque': 'شيك',
-    } : {
-      'cash': 'Cash',
-      'bank_transfer': 'Bank Transfer',
-      'credit_card': 'Credit Card',
-      'cheque': 'Cheque',
-    };
-    
+    final labels = isRTL
+        ? {
+            'cash': 'نقداً',
+            'bank_transfer': 'تحويل بنكي',
+            'credit_card': 'بطاقة ائتمان',
+            'cheque': 'شيك',
+          }
+        : {
+            'cash': 'Cash',
+            'bank_transfer': 'Bank Transfer',
+            'credit_card': 'Credit Card',
+            'cheque': 'Cheque',
+          };
+
     return labels[method] ?? method ?? '';
   }
 }

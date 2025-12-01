@@ -210,7 +210,7 @@ class _NewTransactionDialogState extends State<NewTransactionDialog> {
         _buildLabel(isRTL ? 'نوع المعاملة' : 'Transaction Type'),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: transactionType,
+          initialValue: transactionType,
           decoration: _buildInputDecoration(''),
           items: [
             DropdownMenuItem(
@@ -293,7 +293,7 @@ class _NewTransactionDialogState extends State<NewTransactionDialog> {
         _buildLabel(isRTL ? 'التصنيف' : 'Category'),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: category,
+          initialValue: category,
           decoration:
               _buildInputDecoration(isRTL ? 'اختر التصنيف' : 'Select Category'),
           items: categories.map((cat) {
@@ -326,7 +326,7 @@ class _NewTransactionDialogState extends State<NewTransactionDialog> {
         _buildLabel(isRTL ? 'طريقة الدفع' : 'Payment Method'),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: paymentMethod,
+          initialValue: paymentMethod,
           decoration: _buildInputDecoration(''),
           items: [
             DropdownMenuItem(

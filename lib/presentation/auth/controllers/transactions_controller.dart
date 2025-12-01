@@ -7,6 +7,7 @@ import '../../../data/models/transaction_model.dart';
 
 /// Transactions Controller
 /// Manages transactions state and business logic
+/// FIXED: Proper observable implementation
 class TransactionsController extends GetxController {
   final TransactionRepository _repository;
 
@@ -23,17 +24,11 @@ class TransactionsController extends GetxController {
   // Search controller
   final searchController = TextEditingController();
 
-  // Computed values
-  RxDouble get totalIncome => transactions
-      .where((t) => t.isIncome)
-      .fold(0.0, (sum, t) => sum + (t.amount ?? 0))
-      .obs;
+  // FIXED: Use RxDouble for computed totals
+  final totalIncome = 0.0.obs;
+  final totalExpense = 0.0.obs;
 
-  RxDouble get totalExpense => transactions
-      .where((t) => t.isExpense)
-      .fold(0.0, (sum, t) => sum + (t.amount ?? 0))
-      .obs;
-
+  // Computed filtered transactions
   List<TransactionModel> get filteredTransactions {
     var filtered = transactions.toList();
 
@@ -49,8 +44,8 @@ class TransactionsController extends GetxController {
       final search = searchTerm.value.toLowerCase();
       filtered = filtered.where((t) {
         return (t.description?.toLowerCase().contains(search) ?? false) ||
-               (t.customerSupplier?.toLowerCase().contains(search) ?? false) ||
-               (t.category?.toLowerCase().contains(search) ?? false);
+            (t.customerSupplier?.toLowerCase().contains(search) ?? false) ||
+            (t.category?.toLowerCase().contains(search) ?? false);
       }).toList();
     }
 
@@ -66,6 +61,9 @@ class TransactionsController extends GetxController {
     searchController.addListener(() {
       searchTerm.value = searchController.text;
     });
+
+    // Listen to transactions changes and recalculate totals
+    ever(transactions, (_) => _calculateTotals());
   }
 
   @override
@@ -74,12 +72,30 @@ class TransactionsController extends GetxController {
     super.onClose();
   }
 
+  /// Calculate totals - FIXED
+  void _calculateTotals() {
+    double income = 0.0;
+    double expense = 0.0;
+
+    for (var transaction in transactions) {
+      if (transaction.isIncome) {
+        income += transaction.amount ?? 0;
+      } else {
+        expense += transaction.amount ?? 0;
+      }
+    }
+
+    totalIncome.value = income;
+    totalExpense.value = expense;
+  }
+
   /// Load transactions from API
   Future<void> loadTransactions() async {
     isLoading.value = true;
     try {
       final data = await _repository.getTransactions(sort: '-date');
       transactions.value = data;
+      _calculateTotals(); // Calculate totals after loading
     } catch (e) {
       debugPrint('Error loading transactions: $e');
       Get.snackbar(
@@ -116,13 +132,17 @@ class TransactionsController extends GetxController {
     try {
       // TODO: Implement API call to create transaction
       // final created = await _repository.createTransaction(transaction);
-      
-      // For now, just add to local list
-      transactions.insert(0, transaction);
-      
+
+      // For now, just add to local list with a temporary ID
+      final newTransaction = transaction.copyWith(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+      );
+
+      transactions.insert(0, newTransaction);
+
       Get.snackbar(
         'Success',
-        Get.locale?.languageCode == 'ar' 
+        Get.locale?.languageCode == 'ar'
             ? 'تم إضافة المعاملة بنجاح'
             : 'Transaction created successfully',
         snackPosition: SnackPosition.BOTTOM,
@@ -130,7 +150,7 @@ class TransactionsController extends GetxController {
         colorText: Colors.white,
       );
 
-      // Reload transactions
+      // Reload transactions to get fresh data from API
       await loadTransactions();
     } catch (e) {
       debugPrint('Error creating transaction: $e');
@@ -160,17 +180,21 @@ class TransactionsController extends GetxController {
   Future<void> deleteTransaction(String id) async {
     final confirmed = await Get.dialog<bool>(
       AlertDialog(
-        title: const Text('Delete Transaction'),
-        content: const Text('Are you sure you want to delete this transaction?'),
+        title: Text(Get.locale?.languageCode == 'ar'
+            ? 'حذف المعاملة'
+            : 'Delete Transaction'),
+        content: Text(Get.locale?.languageCode == 'ar'
+            ? 'هل أنت متأكد من حذف هذه المعاملة؟'
+            : 'Are you sure you want to delete this transaction?'),
         actions: [
           TextButton(
             onPressed: () => Get.back(result: false),
-            child: const Text('Cancel'),
+            child: Text(Get.locale?.languageCode == 'ar' ? 'إلغاء' : 'Cancel'),
           ),
           TextButton(
             onPressed: () => Get.back(result: true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Delete'),
+            child: Text(Get.locale?.languageCode == 'ar' ? 'حذف' : 'Delete'),
           ),
         ],
       ),
@@ -179,10 +203,15 @@ class TransactionsController extends GetxController {
     if (confirmed == true) {
       try {
         // TODO: Implement delete API call
+        // await _repository.deleteTransaction(id);
+
         transactions.removeWhere((t) => t.id == id);
+
         Get.snackbar(
           'Success',
-          'Transaction deleted successfully',
+          Get.locale?.languageCode == 'ar'
+              ? 'تم حذف المعاملة بنجاح'
+              : 'Transaction deleted successfully',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.green,
           colorText: Colors.white,
@@ -190,7 +219,9 @@ class TransactionsController extends GetxController {
       } catch (e) {
         Get.snackbar(
           'Error',
-          'Failed to delete transaction',
+          Get.locale?.languageCode == 'ar'
+              ? 'فشل في حذف المعاملة'
+              : 'Failed to delete transaction',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Colors.white,
@@ -204,7 +235,9 @@ class TransactionsController extends GetxController {
     // TODO: Implement CSV export
     Get.snackbar(
       'Coming Soon',
-      'CSV export will be implemented',
+      Get.locale?.languageCode == 'ar'
+          ? 'سيتم تنفيذ التصدير قريباً'
+          : 'CSV export will be implemented',
       snackPosition: SnackPosition.BOTTOM,
     );
   }
