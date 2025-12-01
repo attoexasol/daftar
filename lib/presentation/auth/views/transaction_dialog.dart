@@ -61,58 +61,55 @@ class _NewTransactionDialogState extends State<NewTransactionDialog> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(24),
-            child: Directionality(
-              textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Dialog Header
-                  _buildHeader(isRTL),
-                  const SizedBox(height: 24), // mt-4 (16px) + space
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Dialog Header
+                _buildHeader(isRTL),
+                const SizedBox(height: 24), // mt-4 (16px) + space
 
-                  // Form
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Grid: Date + Type (2 columns)
-                        _buildTwoColumnRow([
-                          _buildDateField(isRTL),
-                          _buildTypeField(isRTL),
-                        ]),
-                        const SizedBox(height: 16),
+                // Form
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Grid: Date + Type (2 columns)
+                      _buildTwoColumnRow([
+                        _buildDateField(isRTL),
+                        _buildTypeField(isRTL),
+                      ]),
+                      const SizedBox(height: 16),
 
-                        // Grid: Amount + Category (2 columns)
-                        _buildTwoColumnRow([
-                          _buildAmountField(isRTL),
-                          _buildCategoryField(isRTL),
-                        ]),
-                        const SizedBox(height: 16),
+                      // Grid: Amount + Category (2 columns)
+                      _buildTwoColumnRow([
+                        _buildAmountField(isRTL),
+                        _buildCategoryField(isRTL),
+                      ]),
+                      const SizedBox(height: 16),
 
-                        // Grid: Payment Method + Customer/Supplier (2 columns)
-                        _buildTwoColumnRow([
-                          _buildPaymentMethodField(isRTL),
-                          _buildCustomerSupplierField(isRTL),
-                        ]),
-                        const SizedBox(height: 16),
+                      // Grid: Payment Method + Customer/Supplier (2 columns)
+                      _buildTwoColumnRow([
+                        _buildPaymentMethodField(isRTL),
+                        _buildCustomerSupplierField(isRTL),
+                      ]),
+                      const SizedBox(height: 16),
 
-                        // Description (full width)
-                        _buildDescriptionField(isRTL),
-                        const SizedBox(height: 16),
+                      // Description (full width)
+                      _buildDescriptionField(isRTL),
+                      const SizedBox(height: 16),
 
-                        // Receipt Upload (full width)
-                        _buildReceiptUpload(isRTL),
-                        const SizedBox(height: 24), // pt-4
+                      // Receipt Upload (full width)
+                      _buildReceiptUpload(isRTL),
+                      const SizedBox(height: 24), // pt-4
 
-                        // Action Buttons
-                        _buildActionButtons(isRTL),
-                      ],
-                    ),
+                      // Action Buttons
+                      _buildActionButtons(isRTL),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -213,7 +210,7 @@ class _NewTransactionDialogState extends State<NewTransactionDialog> {
         _buildLabel(isRTL ? 'نوع المعاملة' : 'Transaction Type'),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          initialValue: transactionType,
+          value: transactionType,
           decoration: _buildInputDecoration(''),
           items: [
             DropdownMenuItem(
@@ -296,7 +293,7 @@ class _NewTransactionDialogState extends State<NewTransactionDialog> {
         _buildLabel(isRTL ? 'التصنيف' : 'Category'),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          initialValue: category,
+          value: category,
           decoration:
               _buildInputDecoration(isRTL ? 'اختر التصنيف' : 'Select Category'),
           items: categories.map((cat) {
@@ -329,7 +326,7 @@ class _NewTransactionDialogState extends State<NewTransactionDialog> {
         _buildLabel(isRTL ? 'طريقة الدفع' : 'Payment Method'),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          initialValue: paymentMethod,
+          value: paymentMethod,
           decoration: _buildInputDecoration(''),
           items: [
             DropdownMenuItem(
