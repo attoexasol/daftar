@@ -2,8 +2,8 @@ import 'package:daftar/presentation/auth/views/transaction_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../data/repositories/transaction_repository.dart';
-import '../../../data/models/transaction_model.dart';
+import '../../../data/repositories/transaction_repository_FIXED.dart';
+import '../../../data/models/transaction_model_FIXED.dart';
 
 /// Transactions Controller
 /// Manages transactions state and business logic

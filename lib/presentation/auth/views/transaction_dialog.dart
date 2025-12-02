@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../../data/models/transaction_model.dart';
+import '../../../data/models/transaction_model_FIXED.dart';
 
 /// New Transaction Dialog
 /// 100% EXACT match with React Dialog implementation

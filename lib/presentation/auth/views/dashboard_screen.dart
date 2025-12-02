@@ -7,7 +7,7 @@ import 'package:fl_chart/fl_chart.dart';
 import '../../../core/widgets/app_drawer.dart';
 import '../../../core/services/language_service.dart';
 import '../controllers/dashboard_controller.dart';
-import '../../../data/models/transaction_model.dart';
+import '../../../data/models/transaction_model_FIXED.dart';
 
 /// Dashboard Screen
 /// 100% EXACT match with React Dashboard.jsx implementation
