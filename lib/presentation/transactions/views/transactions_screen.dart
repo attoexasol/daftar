@@ -1,4 +1,4 @@
-import 'package:daftar/data/models/transaction_model_FIXED.dart';
+import 'package:daftar/data/models/transaction_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';

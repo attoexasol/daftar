@@ -1,17 +1,17 @@
 import 'package:daftar/app/bindings/splash_binding.dart';
 import 'package:daftar/app/bindings/transactions_binding.dart';
 import 'package:daftar/presentation/auth/views/forgot_password_screen.dart';
-import 'package:daftar/presentation/auth/views/owner_screen.dart';
+import 'package:daftar/presentation/owner/views/owner_screen.dart';
 import 'package:daftar/presentation/auth/views/reset_password_screen.dart';
-import 'package:daftar/presentation/auth/views/signup_screen.dart';
-import 'package:daftar/presentation/auth/views/subscription_screen.dart';
-import 'package:daftar/presentation/auth/views/technical_doc_screen.dart';
-import 'package:daftar/presentation/auth/views/transactions_screen.dart';
+import 'package:daftar/presentation/sign_up/views/signup_screen.dart';
+import 'package:daftar/presentation/subscriptions/views/subscription_screen.dart';
+import 'package:daftar/presentation/technical_docs/views/technical_doc_screen.dart';
+import 'package:daftar/presentation/transactions/views/transactions_screen.dart';
 import 'package:get/get.dart';
 
 import '../../presentation/auth/views/login_screen.dart';
 import '../../presentation/splash/splash_screen.dart';
-import '../../presentation/auth/views/dashboard_screen.dart';
+import '../../presentation/dashboard/views/dashboard_screen.dart';
 
 import '../bindings/auth_bindings.dart';
 import '../bindings/dashboard_bindings.dart';

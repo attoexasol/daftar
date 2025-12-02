@@ -1,4 +1,4 @@
-import '../../core/services/base44_service_FIXED.dart';
+import '../../core/services/base44_service.dart';
 import '../models/user_model.dart';
 
 /// Auth Repository

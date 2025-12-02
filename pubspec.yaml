@@ -100,7 +100,7 @@ flutter:
         fonts:
           - asset: assets/fonts/Cairo-Regular.ttf
             weight: 400
-          - asset: assets/fonts/Cairo-Bold.ttf      # ADD THIS
+          - asset: assets\fonts\Cairo-VariableFont_slnt,wght.ttf      # ADD THIS
             weight: 700
   #   - family: Trajan Pro
   #     fonts:

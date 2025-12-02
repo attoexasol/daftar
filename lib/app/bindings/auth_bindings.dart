@@ -1,9 +1,9 @@
 import 'package:daftar/presentation/auth/controllers/forgot_password_controller.dart';
-import 'package:daftar/presentation/auth/controllers/signup_controller.dart';
+import 'package:daftar/presentation/sign_up/controllers/signup_controller.dart';
 import 'package:get/get.dart';
 import '../../presentation/auth/controllers/login_controller.dart';
 import '../../data/repositories/auth_repository.dart';
-import '../../core/services/base44_service_FIXED.dart';
+import '../../core/services/base44_service.dart';
 
 /// Auth Binding
 /// Manages dependency injection for authentication-related controllers

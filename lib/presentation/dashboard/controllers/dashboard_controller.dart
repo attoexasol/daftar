@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../data/models/user_model.dart';
-import '../../../data/models/transaction_model_FIXED.dart';
+import '../../../data/models/transaction_model.dart';
 import '../../../data/repositories/auth_repository.dart';
-import '../../../data/repositories/transaction_repository_FIXED.dart';
+import '../../../data/repositories/transaction_repository.dart';
 
 /// Dashboard Controller
 /// Manages dashboard state and business logic

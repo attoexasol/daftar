@@ -12,8 +12,8 @@
 /// If you want to keep it for reference, here's a fixed version that
 /// matches your architecture, but it should NOT be used in your app.
 
-import 'package:daftar/data/models/transaction_model_FIXED.dart';
-import 'package:daftar/data/repositories/transaction_repository_FIXED.dart';
+import 'package:daftar/data/models/transaction_model.dart';
+import 'package:daftar/data/repositories/transaction_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -7,7 +7,7 @@ import 'package:fl_chart/fl_chart.dart';
 import '../../../core/widgets/app_drawer.dart';
 import '../../../core/services/language_service.dart';
 import '../controllers/dashboard_controller.dart';
-import '../../../data/models/transaction_model_FIXED.dart';
+import '../../../data/models/transaction_model.dart';
 
 /// Dashboard Screen
 /// 100% EXACT match with React Dashboard.jsx implementation
@@ -1016,7 +1016,7 @@ class DashboardScreen extends GetView<DashboardController> {
                   (index) {
                     final transaction = transactions[index];
                     final isLast = index == transactions.length - 1;
-                    
+
                     return Column(
                       children: [
                         _buildTransactionItem(transaction, isRTL),
@@ -1041,61 +1041,65 @@ class DashboardScreen extends GetView<DashboardController> {
   /// Transaction Item - EXACT match with React
   Widget _buildTransactionItem(TransactionModel transaction, bool isRTL) {
     final isIncome = transaction.isIncome;
-    
+
     // Colors matching React exactly
-    final iconBgColor = isIncome 
-        ? const Color(0xFFD1FAE5)  // bg-green-100
+    final iconBgColor = isIncome
+        ? const Color(0xFFD1FAE5) // bg-green-100
         : const Color(0xFFFEE2E2); // bg-red-100
-    
-    final iconColor = isIncome 
-        ? const Color(0xFF059669)  // text-green-600
+
+    final iconColor = isIncome
+        ? const Color(0xFF059669) // text-green-600
         : const Color(0xFFDC2626); // text-red-600
-    
-    final amountColor = isIncome 
-        ? const Color(0xFF059669)  // text-green-600
+
+    final amountColor = isIncome
+        ? const Color(0xFF059669) // text-green-600
         : const Color(0xFFDC2626); // text-red-600
 
     // Category labels matching React
-    final categoryLabels = isRTL ? {
-      'sales': 'مبيعات',
-      'services': 'خدمات',
-      'other_income': 'دخل آخر',
-      'salaries': 'رواتب',
-      'rent': 'إيجار',
-      'utilities': 'مرافق',
-      'purchases': 'مشتريات',
-      'marketing': 'تسويق',
-      'transportation': 'مواصلات',
-      'maintenance': 'صيانة',
-      'taxes': 'ضرائب',
-      'other_expense': 'مصروف آخر',
-    } : {
-      'sales': 'Sales',
-      'services': 'Services',
-      'other_income': 'Other Income',
-      'salaries': 'Salaries',
-      'rent': 'Rent',
-      'utilities': 'Utilities',
-      'purchases': 'Purchases',
-      'marketing': 'Marketing',
-      'transportation': 'Transportation',
-      'maintenance': 'Maintenance',
-      'taxes': 'Taxes',
-      'other_expense': 'Other Expense',
-    };
+    final categoryLabels = isRTL
+        ? {
+            'sales': 'مبيعات',
+            'services': 'خدمات',
+            'other_income': 'دخل آخر',
+            'salaries': 'رواتب',
+            'rent': 'إيجار',
+            'utilities': 'مرافق',
+            'purchases': 'مشتريات',
+            'marketing': 'تسويق',
+            'transportation': 'مواصلات',
+            'maintenance': 'صيانة',
+            'taxes': 'ضرائب',
+            'other_expense': 'مصروف آخر',
+          }
+        : {
+            'sales': 'Sales',
+            'services': 'Services',
+            'other_income': 'Other Income',
+            'salaries': 'Salaries',
+            'rent': 'Rent',
+            'utilities': 'Utilities',
+            'purchases': 'Purchases',
+            'marketing': 'Marketing',
+            'transportation': 'Transportation',
+            'maintenance': 'Maintenance',
+            'taxes': 'Taxes',
+            'other_expense': 'Other Expense',
+          };
 
     // Payment method labels matching React
-    final paymentMethodLabels = isRTL ? {
-      'cash': 'نقداً',
-      'bank_transfer': 'تحويل بنكي',
-      'credit_card': 'بطاقة ائتمان',
-      'cheque': 'شيك',
-    } : {
-      'cash': 'Cash',
-      'bank_transfer': 'Bank Transfer',
-      'credit_card': 'Credit Card',
-      'cheque': 'Cheque',
-    };
+    final paymentMethodLabels = isRTL
+        ? {
+            'cash': 'نقداً',
+            'bank_transfer': 'تحويل بنكي',
+            'credit_card': 'بطاقة ائتمان',
+            'cheque': 'شيك',
+          }
+        : {
+            'cash': 'Cash',
+            'bank_transfer': 'Bank Transfer',
+            'credit_card': 'Credit Card',
+            'cheque': 'Cheque',
+          };
 
     return InkWell(
       onTap: () {
@@ -1136,8 +1140,8 @@ class DashboardScreen extends GetView<DashboardController> {
                       children: [
                         // Category (Primary) - font-semibold text-gray-900
                         Text(
-                          categoryLabels[transaction.category] ?? 
-                              transaction.category ?? 
+                          categoryLabels[transaction.category] ??
+                              transaction.category ??
                               (isIncome ? 'Income' : 'Expense'),
                           style: const TextStyle(
                             fontSize: 16,
@@ -1147,13 +1151,13 @@ class DashboardScreen extends GetView<DashboardController> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        
+
                         const SizedBox(height: 4),
-                        
+
                         // Description/Customer (Secondary) - text-sm text-gray-500
                         Text(
-                          transaction.description ?? 
-                              transaction.customerSupplier ?? 
+                          transaction.description ??
+                              transaction.customerSupplier ??
                               '-',
                           style: const TextStyle(
                             fontSize: 14, // text-sm
@@ -1162,12 +1166,12 @@ class DashboardScreen extends GetView<DashboardController> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        
+
                         const SizedBox(height: 4),
-                        
+
                         // Date - text-xs text-gray-400 mt-1
                         Text(
-                          _formatTransactionDate(transaction.date, isRTL),
+                          _formatTransactionDate(transaction.dateTime, isRTL),
                           style: const TextStyle(
                             fontSize: 12, // text-xs
                             color: Color(0xFF9CA3AF), // text-gray-400
@@ -1182,7 +1186,8 @@ class DashboardScreen extends GetView<DashboardController> {
 
             // Right side: Amount + Payment Method Badge
             Column(
-              crossAxisAlignment: CrossAxisAlignment.end, // text-left in React (RTL context)
+              crossAxisAlignment:
+                  CrossAxisAlignment.end, // text-left in React (RTL context)
               children: [
                 // Amount - text-lg font-bold with color
                 Text(
@@ -1193,9 +1198,9 @@ class DashboardScreen extends GetView<DashboardController> {
                     color: amountColor,
                   ),
                 ),
-                
+
                 const SizedBox(height: 4), // mt-1
-                
+
                 // Payment Method Badge - variant="outline" text-xs
                 Container(
                   padding: const EdgeInsets.symmetric(
@@ -1211,8 +1216,8 @@ class DashboardScreen extends GetView<DashboardController> {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
-                    paymentMethodLabels[transaction.paymentMethod] ?? 
-                        transaction.paymentMethod ?? 
+                    paymentMethodLabels[transaction.paymentMethod] ??
+                        transaction.paymentMethod ??
                         'N/A',
                     style: const TextStyle(
                       fontSize: 12, // text-xs
@@ -1276,9 +1281,11 @@ class DashboardScreen extends GetView<DashboardController> {
 
       // Filter transactions for this month
       final monthTransactions = controller.transactions.where((t) {
-        if (t.date == null) return false;
-        return t.date!.isAfter(monthStart.subtract(const Duration(days: 1))) &&
-            t.date!.isBefore(monthEnd.add(const Duration(days: 1)));
+        final dt = t.dateTime; // SAFE getter from model
+        if (dt == null) return false;
+
+        return dt.isAfter(monthStart.subtract(const Duration(days: 1))) &&
+            dt.isBefore(monthEnd.add(const Duration(days: 1)));
       }).toList();
 
       // Calculate income and expense
@@ -1314,9 +1321,11 @@ class DashboardScreen extends GetView<DashboardController> {
 
     // Filter month transactions
     final monthTransactions = controller.transactions.where((t) {
-      if (t.date == null) return false;
-      return t.date!.isAfter(monthStart.subtract(const Duration(days: 1))) &&
-          t.date!.isBefore(monthEnd.add(const Duration(days: 1)));
+      final dt = t.dateTime;
+      if (dt == null) return false;
+
+      return dt.isAfter(monthStart.subtract(const Duration(days: 1))) &&
+          dt.isBefore(monthEnd.add(const Duration(days: 1)));
     }).toList();
 
     // Group by category (only expenses)

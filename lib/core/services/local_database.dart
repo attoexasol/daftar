@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../../data/models/transaction_model_FIXED.dart';
+import '../../data/models/transaction_model.dart';
 
 /// LocalDatabase - Manages local SQLite database for offline functionality
 /// Stores transactions locally when offline and syncs when back online

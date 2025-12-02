@@ -14,8 +14,9 @@ class LoginController extends GetxController {
       : _authRepository = authRepository;
 
   // Text editing controllers
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final emailController =
+      TextEditingController(text: "attoexasolutions@gmail.com");
+  final passwordController = TextEditingController(text: "12345678");
 
   // Observable states
   final isLoading = false.obs;

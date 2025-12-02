@@ -1,9 +1,10 @@
-import 'package:daftar/core/services/base44_service_FIXED.dart';
-import 'package:daftar/data/models/transaction_model_FIXED.dart';
+import 'package:daftar/core/services/base44_service.dart';
+
+import 'package:daftar/data/models/transaction_model.dart';
 
 /// TransactionRepository
 /// Handles all transaction-related API operations
-/// 
+///
 /// ✅ FIXED VERSION - Now includes:
 /// - Proper Base44Service integration (like AuthRepository)
 /// - filterByDateRange() method
@@ -27,7 +28,8 @@ class TransactionRepository {
     int? offset,
   }) async {
     try {
-      print('\n📡 [TransactionRepository] Fetching transactions from Base44...');
+      print(
+          '\n📡 [TransactionRepository] Fetching transactions from Base44...');
       print('   Parameters: sort=$sort, limit=$limit, offset=$offset');
 
       // Call Base44Service to get transactions
@@ -37,14 +39,17 @@ class TransactionRepository {
         skip: offset,
       );
 
-      print('✅ [TransactionRepository] Received ${rawTransactions.length} transactions');
+      print(
+          '✅ [TransactionRepository] Received ${rawTransactions.length} transactions');
 
       // Convert raw JSON to TransactionModel objects
       final transactions = rawTransactions
-          .map((json) => TransactionModel.fromJson(json as Map<String, dynamic>))
+          .map(
+              (json) => TransactionModel.fromJson(json as Map<String, dynamic>))
           .toList();
 
-      print('✅ [TransactionRepository] Converted to ${transactions.length} TransactionModel objects');
+      print(
+          '✅ [TransactionRepository] Converted to ${transactions.length} TransactionModel objects');
 
       return transactions;
     } catch (e) {
@@ -58,12 +63,13 @@ class TransactionRepository {
       TransactionModel transaction) async {
     try {
       print('\n📤 [TransactionRepository] Creating new transaction...');
-      
+
       // Use Base44Service to create transaction
-      final response = await _base44Service.createTransaction(transaction.toJson());
-      
+      final response =
+          await _base44Service.createTransaction(transaction.toJson());
+
       print('✅ [TransactionRepository] Transaction created successfully');
-      
+
       // Parse response to TransactionModel
       final createdTransaction = TransactionModel.fromJson(response);
       return createdTransaction;
@@ -80,14 +86,14 @@ class TransactionRepository {
   ) async {
     try {
       print('\n📝 [TransactionRepository] Updating transaction $id...');
-      
+
       final response = await _base44Service.updateTransaction(
         id,
         transaction.toJson(),
       );
-      
+
       print('✅ [TransactionRepository] Transaction updated successfully');
-      
+
       return TransactionModel.fromJson(response);
     } catch (e) {
       print('❌ [TransactionRepository] Error updating transaction: $e');
@@ -99,9 +105,9 @@ class TransactionRepository {
   Future<void> deleteTransaction(String id) async {
     try {
       print('\n🗑️ [TransactionRepository] Deleting transaction $id...');
-      
+
       await _base44Service.deleteTransaction(id);
-      
+
       print('✅ [TransactionRepository] Transaction deleted successfully');
     } catch (e) {
       print('❌ [TransactionRepository] Error deleting transaction: $e');
@@ -113,11 +119,11 @@ class TransactionRepository {
   Future<TransactionModel> getTransactionById(String id) async {
     try {
       print('\n🔍 [TransactionRepository] Fetching transaction $id...');
-      
+
       final response = await _base44Service.getTransactionById(id);
-      
+
       print('✅ [TransactionRepository] Transaction fetched successfully');
-      
+
       return TransactionModel.fromJson(response);
     } catch (e) {
       print('❌ [TransactionRepository] Error fetching transaction: $e');
@@ -136,38 +142,32 @@ class TransactionRepository {
     DateTime startDate,
     DateTime endDate,
   ) {
-    print('\n🔍 [TransactionRepository] Filtering transactions by date range...');
+    print(
+        '\n🔍 [TransactionRepository] Filtering transactions by date range...');
     print('   Start: $startDate');
     print('   End: $endDate');
     print('   Total transactions to filter: ${transactions.length}');
 
     final filtered = transactions.where((transaction) {
-      try {
-        // Parse the transaction date
-        DateTime transactionDate;
-        
-        // Handle both String and DateTime types
-        if (transaction.date is String) {
-          transactionDate = DateTime.parse(transaction.date as String);
-        } else if (transaction.date is DateTime) {
-          transactionDate = transaction.date as DateTime;
-        } else {
-          print('⚠️  [TransactionRepository] Unknown date type: ${transaction.date.runtimeType}');
-          return false;
-        }
+      // ✔ SAFE date parsing
+      final dt = transaction.dateTime;
 
-        // Check if transaction date is within range
-        final isInRange = transactionDate.isAfter(startDate.subtract(const Duration(seconds: 1))) &&
-            transactionDate.isBefore(endDate.add(const Duration(seconds: 1)));
-
-        return isInRange;
-      } catch (e) {
-        print('⚠️  [TransactionRepository] Error parsing date for transaction ${transaction.id}: $e');
+      // ✔ Prevent null crash
+      if (dt == null) {
+        print('⚠️  [TransactionRepository] Invalid date for ${transaction.id}');
         return false;
       }
+
+      // ✔ SAFE comparison
+      final isInRange =
+          dt.isAfter(startDate.subtract(const Duration(seconds: 1))) &&
+              dt.isBefore(endDate.add(const Duration(seconds: 1)));
+
+      return isInRange;
     }).toList();
 
-    print('✅ [TransactionRepository] Filtered to ${filtered.length} transactions');
+    print(
+        '✅ [TransactionRepository] Filtered to ${filtered.length} transactions');
 
     return filtered;
   }

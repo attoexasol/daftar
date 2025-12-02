@@ -1,9 +1,9 @@
-import 'package:daftar/presentation/auth/views/transaction_dialog.dart';
+import 'package:daftar/presentation/transactions/views/transaction_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../data/repositories/transaction_repository_FIXED.dart';
-import '../../../data/models/transaction_model_FIXED.dart';
+import '../../../data/repositories/transaction_repository.dart';
+import '../../../data/models/transaction_model.dart';
 
 /// Transactions Controller
 /// Manages transactions state and business logic
@@ -240,5 +240,21 @@ class TransactionsController extends GetxController {
           : 'CSV export will be implemented',
       snackPosition: SnackPosition.BOTTOM,
     );
+  }
+
+  DateTime _parseDateSafe(dynamic value) {
+    if (value == null) return DateTime(1970);
+
+    if (value is DateTime) return value;
+
+    if (value is String) {
+      try {
+        return DateTime.parse(value);
+      } catch (_) {
+        return DateTime.parse("${value}T00:00:00");
+      }
+    }
+
+    return DateTime(1970);
   }
 }
